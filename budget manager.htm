@@ -1,0 +1,99 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Budget Calculator</title>
+  <style>
+    body {
+margin: 20px;
+    }
+    h1 {
+      text-align: justify;
+    }
+    .container {
+      max-width: 400px;
+      margin: auto;
+      background: #fff;
+      padding: 22px;
+      border-radius: 5px;
+    }
+    input, button {
+      padding: 5px;
+      margin: 3px 0;
+      width: 100%;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+    }
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+    th, td {
+      padding: 10px;
+      text-align: justify;
+    }
+    .total-row {
+      background-color: #cbedf2;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Budget Calculator</h1>
+    <form id="budget">
+      <input type="text" id="item" placeholder="item category" required>
+      <input type="number" id="amount" placeholder="Amount spent" step="0.01" required>
+      <button type="submit">Add Expense</button>
+    </form>
+
+    <table id="budgetTable">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Amount (npr)</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+      <tfoot>
+        <tr class="total-row">
+          <td>Total</td>
+          <td id="total">npr 0</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <script>
+    const form = document.getElementById('budget');
+    const tableBody = document.querySelector('#budgetTable tbody');
+    const totalCell = document.getElementById('total');
+    let expenses = [];
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const item = document.getElementById('item').value;
+      const amount = parseFloat(document.getElementById('amount').value);
+
+      expenses.push({ item, amount });
+      updateTable();
+      form.reset();
+    });
+
+    function updateTable() {
+      tableBody.innerHTML = '';
+      expenses.forEach(exp => {
+        const row = `<tr>
+          <td>${exp.item}</td>
+          <td>npr ${exp.amount.toFixed(2)}</td>
+        </tr>`;
+        tableBody.innerHTML += row;
+      });
+
+      const total = expenses.reduce((sum, exp) => sum + exp.amount, 0);
+      totalCell.textContent = `npr ${total.toFixed(2)}`;
+    }
+  </script>
+</body>
+</html>
